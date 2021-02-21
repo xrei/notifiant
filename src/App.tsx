@@ -1,9 +1,20 @@
 import React, { useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
+import { createEvent, createStore } from 'effector'
+import { useStore } from 'effector-react'
+
+const $count = createStore(0)
+const increase = createEvent()
+
+$count.on(increase, (v) => v + 1) 
+
+$count.watch((val) => {
+  console.log(val)
+})
 
 function App() {
-  const [count, setCount] = useState(0)
+  const count = useStore($count)
 
   return (
     <div className="App">
@@ -11,7 +22,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <p>Hello Vite + React!</p>
         <p>
-          <button onClick={() => setCount((count) => count + 1)}>
+          <button onClick={() => increase()}>
             count is: {count}
           </button>
         </p>
